@@ -1,16 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(PlantsVsZombies CXX C RC)
 
-# ---------------------------------------------------------------------------
-# Sanity check: this project targets Windows
-# ---------------------------------------------------------------------------
-if(NOT WIN32 AND NOT CMAKE_CROSSCOMPILING)
-    message(FATAL_ERROR
-        "This project targets Windows.\n"
-        "On Linux, cross-compile with:\n"
-        "  cmake .. -DCMAKE_TOOLCHAIN_FILE=../mingw-toolchain.cmake")
-endif()
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
