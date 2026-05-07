@@ -27,6 +27,14 @@ typedef long SHANDLE_PTR;
 #include <windows.h>
 #include <math.h>
 #include <float.h>
+#include <time.h>
+
+// MinGW time defines cause conflicts, so we simply redefine the usages
+// inline inside the implementation. Wait, instead of defines here that
+// leak into sec_api, let's fix it by defining __time32_t and _time32
+// more carefully or rely on standard time_t.
+#define _time32 time
+#define __time32_t long
 
 #ifdef __cplusplus
 #include <algorithm>      /* std::min / std::max */
