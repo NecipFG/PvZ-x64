@@ -408,11 +408,13 @@ else()
 endif()
 
 # ---------------------------------------------------------------------------
-# Post-build: copy bass.dll next to the exe
+# Post-build: copy bass.dll next to the exe (if it exists)
 # ---------------------------------------------------------------------------
-add_custom_command(TARGET PlantsVsZombies POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${ROOT}/bass.dll"
-        "$<TARGET_FILE_DIR:PlantsVsZombies>/bass.dll"
-    COMMENT "Copying bass.dll to output directory"
-)
+if(EXISTS "${ROOT}/bass.dll")
+    add_custom_command(TARGET PlantsVsZombies POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${ROOT}/bass.dll"
+            "$<TARGET_FILE_DIR:PlantsVsZombies>/bass.dll"
+        COMMENT "Copying bass.dll to output directory"
+    )
+endif()

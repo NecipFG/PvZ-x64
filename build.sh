@@ -56,6 +56,24 @@ if [ ! -f "$BASS_IMPLIB" ]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.5 Generate D3D8 import library for MinGW
+# ---------------------------------------------------------------------------
+D3D8_DEF="$ROOT/d3d8.def"
+D3D8_IMPLIB="$ROOT/libd3d8.a"
+
+if [ ! -f "$D3D8_IMPLIB" ]; then
+    if [ -f "$D3D8_DEF" ]; then
+        echo ">>> Generating MinGW import library for d3d8.dll ..."
+        "${CROSS}-dlltool" \
+            --input-def "$D3D8_DEF" \
+            --dllname d3d8.dll \
+            --output-lib "$D3D8_IMPLIB" \
+            --kill-at
+        echo ">>> libd3d8.a generated."
+    fi
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Configure with CMake
 # ---------------------------------------------------------------------------
 BUILD_TYPE="${1:-Release}"   # pass "Debug" as first arg for debug build
