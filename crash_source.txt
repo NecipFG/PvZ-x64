@@ -1,0 +1,144 @@
+
+build/PlantsVsZombies.exe:     file format pei-i386
+
+
+Disassembly of section .text:
+
+004a3f00 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x700>:
+  4a3f00:	fe                   	(bad)
+  4a3f01:	ff                   	(bad)
+  4a3f02:	ff c7                	inc    %edi
+  4a3f04:	44                   	inc    %esp
+  4a3f05:	24 04                	and    $0x4,%al
+  4a3f07:	01 00                	add    %eax,(%eax)
+  4a3f09:	00 00                	add    %al,(%eax)
+  4a3f0b:	c7 04 24 03 00 00 00 	movl   $0x3,(%esp)
+  4a3f12:	8b 7d b4             	mov    -0x4c(%ebp),%edi
+  4a3f15:	89 f9                	mov    %edi,%ecx
+  4a3f17:	e8 14 f8 ff ff       	call   4a3730 <ChallengeScreen::SetUnlockChallengeIndex(ChallengePage, bool)>
+  4a3f1c:	8b 87 bc 01 00 00    	mov    0x1bc(%edi),%eax
+  4a3f22:	83 ec 08             	sub    $0x8,%esp
+  4a3f25:	8b 80 28 08 00 00    	mov    0x828(%eax),%eax
+  4a3f2b:	c7 80 2c 03 00 00 00 	movl   $0x0,0x32c(%eax)
+  4a3f32:	00 00 00 
+  4a3f35:	e9 94 fe ff ff       	jmp    4a3dce <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x5ce>
+  4a3f3a:	8b 45 b4             	mov    -0x4c(%ebp),%eax
+  4a3f3d:	8b 80 bc 01 00 00    	mov    0x1bc(%eax),%eax
+  4a3f43:	8b 80 28 08 00 00    	mov    0x828(%eax),%eax
+  4a3f49:	8b 88 24 03 00 00    	mov    0x324(%eax),%ecx
+  4a3f4f:	85 c9                	test   %ecx,%ecx
+  4a3f51:	0f 84 77 fe ff ff    	je     4a3dce <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x5ce>
+  4a3f57:	8b 45 b4             	mov    -0x4c(%ebp),%eax
+  4a3f5a:	31 db                	xor    %ebx,%ebx
+  4a3f5c:	c7 80 cc 01 00 00 01 	movl   $0x1,0x1cc(%eax)
+  4a3f63:	00 00 00 
+  4a3f66:	c7 80 d0 01 00 00 64 	movl   $0x64,0x1d0(%eax)
+  4a3f6d:	00 00 00 
+  4a3f70:	c7 80 d4 01 00 00 00 	movl   $0x0,0x1d4(%eax)
+  4a3f77:	00 00 00 
+  4a3f7a:	eb 10                	jmp    4a3f8c <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x78c>
+  4a3f7c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+  4a3f80:	83 c3 01             	add    $0x1,%ebx
+  4a3f83:	83 fb 49             	cmp    $0x49,%ebx
+  4a3f86:	0f 84 74 01 00 00    	je     4a4100 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x900>
+  4a3f8c:	8d 04 5b             	lea    (%ebx,%ebx,2),%eax
+  4a3f8f:	83 3c c5 68 39 7f 00 	cmpl   $0x1,0x7f3968(,%eax,8)
+  4a3f96:	01 
+  4a3f97:	75 e7                	jne    4a3f80 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x780>
+  4a3f99:	89 1c 24             	mov    %ebx,(%esp)
+  4a3f9c:	8b 7d b4             	mov    -0x4c(%ebp),%edi
+  4a3f9f:	89 f9                	mov    %edi,%ecx
+  4a3fa1:	e8 fa f6 ff ff       	call   4a36a0 <ChallengeScreen::AccomplishmentsNeeded(int)>
+  4a3fa6:	83 ec 04             	sub    $0x4,%esp
+  4a3fa9:	85 c0                	test   %eax,%eax
+  4a3fab:	7f d3                	jg     4a3f80 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x780>
+  4a3fad:	89 9f d4 01 00 00    	mov    %ebx,0x1d4(%edi)
+  4a3fb3:	eb cb                	jmp    4a3f80 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x780>
+  4a3fb5:	3b 55 ac             	cmp    -0x54(%ebp),%edx
+  4a3fb8:	0f 84 ff 00 00 00    	je     4a40bd <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x8bd>
+  4a3fbe:	8b 45 a4             	mov    -0x5c(%ebp),%eax
+  4a3fc1:	89 93 84 00 00 00    	mov    %edx,0x84(%ebx)
+  4a3fc7:	89 83 88 00 00 00    	mov    %eax,0x88(%ebx)
+  4a3fcd:	8b 45 d8             	mov    -0x28(%ebp),%eax
+  4a3fd0:	89 83 8c 00 00 00    	mov    %eax,0x8c(%ebx)
+  4a3fd6:	8b 45 ac             	mov    -0x54(%ebp),%eax
+  4a3fd9:	89 45 d0             	mov    %eax,-0x30(%ebp)
+  4a3fdc:	8d 45 d8             	lea    -0x28(%ebp),%eax
+  4a3fdf:	89 45 ac             	mov    %eax,-0x54(%ebp)
+  4a3fe2:	e9 5b fe ff ff       	jmp    4a3e42 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x642>
+  4a3fe7:	c7 87 cc 01 00 00 01 	movl   $0x1,0x1cc(%edi)
+  4a3fee:	00 00 00 
+  4a3ff1:	31 db                	xor    %ebx,%ebx
+  4a3ff3:	c7 87 d0 01 00 00 64 	movl   $0x64,0x1d0(%edi)
+  4a3ffa:	00 00 00 
+  4a3ffd:	c7 87 d4 01 00 00 00 	movl   $0x0,0x1d4(%edi)
+  4a4004:	00 00 00 
+  4a4007:	eb 1f                	jmp    4a4028 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x828>
+  4a4009:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+  4a4010:	2e 8d b4 26 00 00 00 	lea    %cs:0x0(%esi,%eiz,1),%esi
+  4a4017:	00 
+  4a4018:	2e 8d b4 26 00 00 00 	lea    %cs:0x0(%esi,%eiz,1),%esi
+  4a401f:	00 
+  4a4020:	83 c3 01             	add    $0x1,%ebx
+  4a4023:	83 fb 49             	cmp    $0x49,%ebx
+  4a4026:	74 30                	je     4a4058 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x858>
+  4a4028:	8d 04 5b             	lea    (%ebx,%ebx,2),%eax
+  4a402b:	8b 34 c5 68 39 7f 00 	mov    0x7f3968(,%eax,8),%esi
+  4a4032:	85 f6                	test   %esi,%esi
+  4a4034:	75 ea                	jne    4a4020 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x820>
+  4a4036:	89 1c 24             	mov    %ebx,(%esp)
+  4a4039:	8b 7d b4             	mov    -0x4c(%ebp),%edi
+  4a403c:	89 f9                	mov    %edi,%ecx
+  4a403e:	e8 5d f6 ff ff       	call   4a36a0 <ChallengeScreen::AccomplishmentsNeeded(int)>
+  4a4043:	83 ec 04             	sub    $0x4,%esp
+  4a4046:	85 c0                	test   %eax,%eax
+  4a4048:	7f d6                	jg     4a4020 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x820>
+  4a404a:	89 9f d4 01 00 00    	mov    %ebx,0x1d4(%edi)
+  4a4050:	83 c3 01             	add    $0x1,%ebx
+  4a4053:	83 fb 49             	cmp    $0x49,%ebx
+  4a4056:	75 d0                	jne    4a4028 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x828>
+  4a4058:	8b 45 b4             	mov    -0x4c(%ebp),%eax
+  4a405b:	8b 80 bc 01 00 00    	mov    0x1bc(%eax),%eax
+  4a4061:	8b 80 28 08 00 00    	mov    0x828(%eax),%eax
+  4a4067:	c7 80 30 03 00 00 00 	movl   $0x0,0x330(%eax)
+  4a406e:	00 00 00 
+  4a4071:	8d 65 f4             	lea    -0xc(%ebp),%esp
+  4a4074:	5b                   	pop    %ebx
+  4a4075:	5e                   	pop    %esi
+  4a4076:	5f                   	pop    %edi
+  4a4077:	5d                   	pop    %ebp
+  4a4078:	c2 08 00             	ret    $0x8
+  4a407b:	0f b6 55 c0          	movzbl -0x40(%ebp),%edx
+  4a407f:	88 10                	mov    %dl,(%eax)
+  4a4081:	e9 23 fe ff ff       	jmp    4a3ea9 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x6a9>
+  4a4086:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%esp)
+  4a408d:	00 
+  4a408e:	c7 04 24 03 00 00 00 	movl   $0x3,(%esp)
+  4a4095:	8b 7d b4             	mov    -0x4c(%ebp),%edi
+  4a4098:	89 f9                	mov    %edi,%ecx
+  4a409a:	e8 91 f6 ff ff       	call   4a3730 <ChallengeScreen::SetUnlockChallengeIndex(ChallengePage, bool)>
+  4a409f:	8b 87 bc 01 00 00    	mov    0x1bc(%edi),%eax
+  4a40a5:	83 ec 08             	sub    $0x8,%esp
+  4a40a8:	8b 80 28 08 00 00    	mov    0x828(%eax),%eax
+  4a40ae:	c7 80 28 03 00 00 00 	movl   $0x0,0x328(%eax)
+  4a40b5:	00 00 00 
+  4a40b8:	e9 11 fd ff ff       	jmp    4a3dce <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x5ce>
+  4a40bd:	8b 55 a4             	mov    -0x5c(%ebp),%edx
+  4a40c0:	85 d2                	test   %edx,%edx
+  4a40c2:	74 27                	je     4a40eb <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x8eb>
+  4a40c4:	83 fa 01             	cmp    $0x1,%edx
+  4a40c7:	74 55                	je     4a411e <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x91e>
+  4a40c9:	8b 55 a4             	mov    -0x5c(%ebp),%edx
+  4a40cc:	89 54 24 08          	mov    %edx,0x8(%esp)
+  4a40d0:	8b 55 ac             	mov    -0x54(%ebp),%edx
+  4a40d3:	89 04 24             	mov    %eax,(%esp)
+  4a40d6:	89 54 24 04          	mov    %edx,0x4(%esp)
+  4a40da:	e8 f1 be 28 00       	call   72ffd0 <memcpy>
+  4a40df:	8b 45 d4             	mov    -0x2c(%ebp),%eax
+  4a40e2:	89 45 a4             	mov    %eax,-0x5c(%ebp)
+  4a40e5:	8b 83 84 00 00 00    	mov    0x84(%ebx),%eax
+  4a40eb:	8b 55 a4             	mov    -0x5c(%ebp),%edx
+  4a40ee:	89 93 88 00 00 00    	mov    %edx,0x88(%ebx)
+  4a40f4:	c6 04 10 00          	movb   $0x0,(%eax,%edx,1)
+  4a40f8:	8b 45 d0             	mov    -0x30(%ebp),%eax
+  4a40fb:	e9 42 fd ff ff       	jmp    4a3e42 <ChallengeScreen::ChallengeScreen(LawnApp*, ChallengePage)+0x642>

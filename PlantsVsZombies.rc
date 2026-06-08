@@ -1,0 +1,6 @@
+/* Minimal resource script for MinGW windres */
+
+#define IDC_CURSOR1 102
+
+IDC_CURSOR1   CURSOR  "Cursor13.cur"
+IDI_MAIN_ICON ICON    "main_icon.ico"
