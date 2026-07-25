@@ -36,7 +36,7 @@ This implementation builds upon PopCap's original C++ game engine and **SexyAppF
 | Hotkey | Action | Description |
 | :--- | :--- | :--- |
 | `Space` / `Enter` | **Pause / Resume** | Toggle game pause state |
-| `F` | **Fast-Forward** | Toggle 2× game speed |
+| `F` | **Fast-Forward** | Cycle game speed (1× → 2× → 4×) |
 | `J` | **Auto-Collect Sun** | Toggle automatic collection of dropped sun coins |
 | `1` – `9` | **Select Seed Slot** | Quickly select seed packet in slots 1 through 9 |
 | `Q` | **Toggle Shovel** | Pick up or deselect the shovel |

@@ -4225,6 +4225,8 @@ bool SexyAppBase::DebugKeyDown(int theKey)
 			gFPSDisplay = 0;
 			gForceDisplay = true;
 		}
+
+		return true;
 	}
 	else if (theKey == VK_F8)
 	{

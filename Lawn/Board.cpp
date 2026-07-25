@@ -8011,11 +8011,16 @@ void Board::KeyDown(KeyCode theKey)
 {
 	DoTypingCheck(theKey);
 
-	if (mApp->mGameScene == GameScenes::SCENE_LEVEL_INTRO && 
-		mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN && 
+	if (mApp->mGameScene == GameScenes::SCENE_LEVEL_INTRO &&
+		mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN &&
 		mApp->mGameMode != GameMode::GAMEMODE_TREE_OF_WISDOM)
 	{
 		mCutScene->KeyDown(theKey);
+	}
+	else if (HandleHotkey(theKey))
+	{
+		// QoL hotkey consumed the key (see Lawn/Hotkey.cpp for the full table:
+		// pause, fast-forward, auto-sun, seed select, shovel, mute, restart, help, FPS)
 	}
 	else if (theKey == KeyCode::KEYCODE_RETURN || theKey == KeyCode::KEYCODE_SPACE)
 	{

@@ -7,7 +7,7 @@ using namespace Sexy;
 const Hotkey gHotkeys[] = {
     { KEYCODE_SPACE,  HOTKEY_MOD_NONE,  HotkeyAction::Pause,         "Pause / Resume" },
     { KEYCODE_RETURN, HOTKEY_MOD_NONE,  HotkeyAction::Pause,         "Pause / Resume" },
-    { 'F',            HOTKEY_MOD_NONE,  HotkeyAction::FastForward,   "Toggle Fast-Forward (2x)" },
+    { 'F',            HOTKEY_MOD_NONE,  HotkeyAction::FastForward,   "Cycle speed (1x/2x/4x)" },
     { 'R',            HOTKEY_MOD_CTRL,  HotkeyAction::Restart,       "Restart Level (with confirm)" },
     { KEYCODE_ESCAPE, HOTKEY_MOD_NONE,  HotkeyAction::Menu,          "Open in-game menu" },
     { 'Q',            HOTKEY_MOD_NONE,  HotkeyAction::ToggleShovel,  "Pick up / cancel shovel" },
