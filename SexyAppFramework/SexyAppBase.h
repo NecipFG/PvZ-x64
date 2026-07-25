@@ -163,6 +163,9 @@ public:
 	bool					mSEHOccured;
 	bool					mShutdown;
 	bool					mExitToTop;
+	bool					mHeadlessMode;
+	int						mHeadlessTicksMax;
+	int						mHeadlessTicksCount;
 	bool					mIsWindowed;
 	bool					mIsPhysWindowed;
 	bool					mFullScreenWindow; // uses ChangeDisplaySettings to run fullscreen with mIsWindowed true

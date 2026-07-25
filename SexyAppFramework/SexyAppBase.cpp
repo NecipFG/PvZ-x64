@@ -305,6 +305,9 @@ SexyAppBase::SexyAppBase()
 	mTitle = _S("SexyApp");
 	mShutdown = false;
 	mExitToTop = false;
+	mHeadlessMode = false;
+	mHeadlessTicksMax = 1000;
+	mHeadlessTicksCount = 0;
 	mWidth = 640;
 	mHeight = 480;
 	mFullscreenBits = 16;
@@ -5679,6 +5682,20 @@ void SexyAppBase::DoMainLoop()
 		
 		FrameworkLog("SexyAppBase::DoMainLoop: Calling UpdateApp\n");
 		UpdateApp();
+
+		if (mHeadlessMode)
+		{
+			mHeadlessTicksCount++;
+			if (mHeadlessTicksCount % 100 == 0 || mHeadlessTicksCount == 1)
+			{
+				printf("[HEADLESS] Tick %d / %d\n", mHeadlessTicksCount, mHeadlessTicksMax);
+			}
+			if (mHeadlessTicksCount >= mHeadlessTicksMax)
+			{
+				printf("[HEADLESS] Completed %d ticks successfully.\n", mHeadlessTicksCount);
+				mShutdown = true;
+			}
+		}
 	}
 	FrameworkLog("SexyAppBase::DoMainLoop: Exit\n");
 }
@@ -6373,6 +6390,18 @@ void SexyAppBase::HandleCmdLineParam(const std::string& theParamName, const std:
 	else if (theParamName == "-changedir")
 	{
 		mChangeDirTo = theParamValue;
+	}
+	else if (theParamName == "-headless" || theParamName == "--headless")
+	{
+		mHeadlessMode = true;
+#ifndef _WIN32
+		setenv("SDL_VIDEODRIVER", "dummy", 1);
+#endif
+	}
+	else if (theParamName == "-ticks" || theParamName == "--ticks")
+	{
+		mHeadlessTicksMax = atoi(theParamValue.c_str());
+		if (mHeadlessTicksMax <= 0) mHeadlessTicksMax = 500;
 	}
 	else
 	{

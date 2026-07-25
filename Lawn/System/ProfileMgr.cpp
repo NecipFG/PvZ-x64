@@ -72,10 +72,8 @@ void ProfileMgr::SyncState(DataSync& theSync)
 //0x46ABC0
 void ProfileMgr::Load()
 {
-	{ FILE* fLog = fopen("init_log.txt", "a"); if (fLog) { fprintf(fLog, "ProfileMgr::Load starting\n"); fclose(fLog); } }
     Buffer aBuffer;
     std::string aFileName = GetAppDataFolder() + "userdata/users.dat";
-	{ FILE* fLog = fopen("init_log.txt", "a"); if (fLog) { fprintf(fLog, "ProfileMgr::Load: reading %s\n", aFileName.c_str()); fclose(fLog); } }
 
     try
     {

@@ -335,7 +335,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 //0x42E6E0
 bool ChallengeScreen::ShowPageButtons()
 {
-	return mPageIndex != CHALLENGE_PAGE_SURVIVAL && mPageIndex != CHALLENGE_PAGE_PUZZLE;
+	return mApp->mTodCheatKeys && mPageIndex != CHALLENGE_PAGE_SURVIVAL && mPageIndex != CHALLENGE_PAGE_PUZZLE;
 }
 
 //0x42E710
@@ -444,21 +444,19 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 				// 先尝试在名称字符串的后半段取空格以将字符串分隔为两行，若后半段中无空格则在整个字符串中寻找空格
 				int aHalfPos = (mPageIndex == CHALLENGE_PAGE_SURVIVAL && !aChallengeButton->mDisabled) ? 7 : (aNameLen / 2 - 1);
 				const SexyChar* aSpacedChar = strchr(aName.c_str() + aHalfPos, ' ');
-				while(aSpacedChar == nullptr)
+				while(aSpacedChar[0]!=' ')
 				{
-					if (aHalfPos >= aNameLen - 1)
-					{
-						aHalfPos = aNameLen - 1;
-						break;
-					}
 					aHalfPos++;
 					aSpacedChar = strchr(aName.c_str() + aHalfPos, ' ');
+					if(aSpacedChar[0]=='\0')
+					{
+						aHalfPos--;
+						aSpacedChar = strchr(aName.c_str() + aHalfPos, ' ');
+						break;
+					}
 				}
-				if (aSpacedChar != nullptr)
-				{
-					aHalfPos--;
-					aSpacedChar = strchr(aName.c_str() + aHalfPos, ' ');
-				}
+				aHalfPos--;
+				aSpacedChar = strchr(aName.c_str() + aHalfPos, ' ');
 
 				
 				if (aSpacedChar == nullptr)
@@ -474,30 +472,23 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 					aLine1Len = aSpacedChar - aName.c_str();
 					aLine2Len = aNameLen - aLine1Len - 1;
 				}
-
-				// 若名称中没有可分行的空格，则按单行绘制
-				if (aSpacedChar == nullptr)
+				
+				// 分别绘制两行文本字符串
+				auto topStr=aName.substr(0, aLine1Len+1);
+				auto botStr=aName.substr(aLine1Len + 1, aLine2Len);
+				if(botStr.empty())
 				{
 					TodDrawString(g, aName, aPosX + 52, aPosY + 96, Sexy::FONT_BRIANNETOD12, aTextColor, DS_ALIGN_CENTER);
 				}
 				else
 				{
-					// 分别绘制两行文本字符串
-					auto topStr=aName.substr(0, aLine1Len+1);
-					auto botStr=aName.substr(aLine1Len + 1, aLine2Len);
-					if(botStr.empty())
+					TodDrawString(g, topStr, aPosX + 52, aPosY + 88, Sexy::FONT_BRIANNETOD12, aTextColor, DS_ALIGN_CENTER);
+					if (aLine2Len > 0)
 					{
-						TodDrawString(g, aName, aPosX + 52, aPosY + 96, Sexy::FONT_BRIANNETOD12, aTextColor, DS_ALIGN_CENTER);
-					}
-					else
-					{
-						TodDrawString(g, topStr, aPosX + 52, aPosY + 88, Sexy::FONT_BRIANNETOD12, aTextColor, DS_ALIGN_CENTER);
-						if (aLine2Len > 0)
-						{
-							TodDrawString(g, botStr, aPosX + 52, aPosY + 102, Sexy::FONT_BRIANNETOD12, aTextColor, DS_ALIGN_CENTER);
-						}
+						TodDrawString(g, botStr, aPosX + 52, aPosY + 102, Sexy::FONT_BRIANNETOD12, aTextColor, DS_ALIGN_CENTER);
 					}
 				}
+			
 			}
 
 			// ============================================================================================
@@ -648,7 +639,7 @@ void ChallengeScreen::ButtonDepress(int theId)
 	}
 
 	int aPageIndex = theId - ChallengeScreen::ChallengeScreen_Page;
-	if (aPageIndex >= 0 && aPageIndex < MAX_CHALLANGE_PAGES)
+	if (aPageIndex >= 0 && aPageIndex < 4)
 	{
 		mPageIndex = (ChallengePage)aPageIndex;
 		UpdateButtons();

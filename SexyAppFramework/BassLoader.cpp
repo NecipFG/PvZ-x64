@@ -157,24 +157,35 @@ void Sexy::LoadBassDLL()
 		return;
 
 	gBass = new BASS_INSTANCE(BASS_DLL_NAME);
-	if (gBass->mModule==NULL)
+	if (gBass->mModule == NULL)
 	{
 #ifndef _WIN32
 		const char* err1 = dlerror();
-		if (err1) printf("dlopen(libbass.so) failed: %s\n", err1);
+		if (err1) fprintf(stderr, "dlopen(%s) failed: %s\n", BASS_DLL_NAME, err1);
 #endif
 		delete gBass;
 		gBass = new BASS_INSTANCE("./libbass.so");
 	}
+	if (gBass->mModule == NULL)
+	{
+		delete gBass;
+		gBass = new BASS_INSTANCE("Debug/libbass.so");
+	}
+	if (gBass->mModule == NULL)
+	{
+		delete gBass;
+		gBass = new BASS_INSTANCE("build-linux/libbass.so");
+	}
 
-	if (gBass->mModule==NULL)
+	if (gBass->mModule == NULL)
 	{
 #ifndef _WIN32
 		const char* err2 = dlerror();
-		if (err2) printf("dlopen(./libbass.so) failed: %s\n", err2);
+		if (err2) fprintf(stderr, "dlopen search failed. Last error: %s\n", err2);
 #endif
-		MessageBoxA(NULL,"Can't find BASS audio library." ,"Error",MB_OK | MB_ICONERROR);
-		exit(0);
+		fprintf(stderr, "ERROR: Could not load BASS audio library (%s).\n", BASS_DLL_NAME);
+		MessageBoxA(NULL, "Can't find BASS audio library (libbass.so / bass.dll). Please ensure it is present in the application directory.", "Error", MB_OK | MB_ICONERROR);
+		exit(1);
 	}
 }
 

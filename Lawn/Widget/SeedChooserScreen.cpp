@@ -76,8 +76,8 @@ SeedChooserScreen::SeedChooserScreen()
 	Color aBtnColor = Color(42, 42, 90);
 	Image* aBtnImage = Sexy::IMAGE_SEEDCHOOSER_BUTTON2;
 	Image* aOverImage = Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW;
-	int aImageWidth = aBtnImage->GetWidth();
-	int aImageHeight = aOverImage->GetHeight();
+	int aImageWidth = aBtnImage ? aBtnImage->GetWidth() : 110;
+	int aImageHeight = aOverImage ? aOverImage->GetHeight() : 26;
 
 	mViewLawnButton = new GameButton(SeedChooserScreen::SeedChooserScreen_ViewLawn);
 	mViewLawnButton->SetLabel(_S("[VIEW_LAWN]"));
@@ -90,7 +90,7 @@ SeedChooserScreen::SeedChooserScreen()
 	mViewLawnButton->Resize(22, 561, aImageWidth, aImageHeight);
 	mViewLawnButton->mParentWidget = this;
 	mViewLawnButton->mTextOffsetY = 1;
-	if (!mBoard->mCutScene->IsSurvivalRepick())
+	if (mBoard == nullptr || mBoard->mCutScene == nullptr || !mBoard->mCutScene->IsSurvivalRepick())
 	{
 		mViewLawnButton->mBtnNoDraw = true;
 		mViewLawnButton->mDisabled = true;
@@ -125,7 +125,9 @@ SeedChooserScreen::SeedChooserScreen()
 	mImitaterButton->mOverImage = Sexy::IMAGE_IMITATERSEED;
 	mImitaterButton->mDownImage = Sexy::IMAGE_IMITATERSEED;
 	mImitaterButton->mDisabledImage = Sexy::IMAGE_IMITATERSEEDDISABLED;
-	mImitaterButton->Resize(9999, 9999, Sexy::IMAGE_IMITATERSEED->mWidth, Sexy::IMAGE_IMITATERSEED->mHeight);
+	int anImitaterW = Sexy::IMAGE_IMITATERSEED ? Sexy::IMAGE_IMITATERSEED->mWidth : 50;
+	int anImitaterH = Sexy::IMAGE_IMITATERSEED ? Sexy::IMAGE_IMITATERSEED->mHeight : 70;
+	mImitaterButton->Resize(9999, 9999, anImitaterW, anImitaterH);
 	mImitaterButton->mParentWidget = this;
 
 	if (!mApp->CanShowAlmanac())
@@ -139,6 +141,7 @@ SeedChooserScreen::SeedChooserScreen()
 		mStoreButton->mDisabled = true;
 	}
 
+	DBG_ASSERT(mApp->GetSeedsAvailable() <= NUM_SEEDS_IN_CHOOSER);
 	memset(mChosenSeeds, 0, sizeof(mChosenSeeds));
 	for (SeedType aSeedType = SEED_PEASHOOTER; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
 	{
@@ -158,7 +161,7 @@ SeedChooserScreen::SeedChooserScreen()
 		aChosenSeed.mImitaterType = SEED_NONE;
 		aChosenSeed.mCrazyDavePicked = false;
 	}
-	if (mBoard->mCutScene->IsSurvivalRepick())
+	if (mBoard && mBoard->mCutScene && mBoard->mCutScene->IsSurvivalRepick())
 	{
 		for (int anIdx = 0; anIdx < mBoard->mSeedBank->mNumPackets; anIdx++)
 		{
@@ -169,7 +172,7 @@ SeedChooserScreen::SeedChooserScreen()
 		}
 		mBoard->mSeedBank->mNumPackets = 0;
 	}
-	if (mApp->mGameMode == GAMEMODE_CHALLENGE_SEEING_STARS)
+	if (mApp->mGameMode == GAMEMODE_CHALLENGE_SEEING_STARS && mBoard)
 	{
 		ChosenSeed& aStarFruit = mChosenSeeds[SEED_STARFRUIT];
 		int aX = mBoard->GetSeedPacketPositionX(0);
@@ -205,7 +208,7 @@ int SeedChooserScreen::PickFromWeightedArrayUsingSpecialRandSeed(TodWeightedArra
 //0x483F70
 void SeedChooserScreen::CrazyDavePickSeeds()
 {
-	TodWeightedArray aSeedArray[NUM_SEED_TYPES];
+	TodWeightedArray aSeedArray[NUM_SEEDS_IN_CHOOSER];
 	for (SeedType aSeedType = SEED_PEASHOOTER; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
 	{
 		aSeedArray[aSeedType].mItem = aSeedType;

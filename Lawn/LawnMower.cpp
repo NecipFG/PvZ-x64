@@ -190,13 +190,13 @@ void LawnMower::Update()
     Zombie* aZombie = nullptr;
     while (mBoard->IterateZombies(aZombie))
     {
-        if (aZombie->IsBoss())
+        if (aZombie->mZombieType == ZombieType::ZOMBIE_BOSS)
             continue;
 
         if (aZombie->mRow - mRow)
             continue;
 
-        if (!aZombie->IsBoss() && 
+        if (aZombie->mZombieType != ZombieType::ZOMBIE_BOSS && 
             aZombie->mRow - mRow == 0 && 
             aZombie->mZombiePhase != ZombiePhase::PHASE_ZOMBIE_MOWERED && 
             !aZombie->IsTangleKelpTarget() && 

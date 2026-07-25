@@ -207,8 +207,7 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
      "reanim\\Credits_WeAreTheUndead.reanim", 1},
     {ReanimationType::REANIM_CREDITS_DISCOLIGHTS,
      "reanim\\Credits_DiscoLights.reanim", 1},
-    {ReanimationType::REANIM_FLAG, "reanim\\Zombie_FlagPole.reanim", 0},
-    {ReanimationType::REANIM_EXPLODE_O_NUT, "reanim\\explodeonut.reanim", 0}
+    {ReanimationType::REANIM_FLAG, "reanim\\Zombie_FlagPole.reanim", 0}
 };
 
 // 0x471540
@@ -1396,8 +1395,7 @@ void Reanimation::ParseAttacherTrack(const ReanimatorTransform &theTransform,
   const char *aTrackName =
       strstr(aReanimName + 2, "__"); // 动画名称之后，指向轨道名称前的双下划线
   if (aTags && aTrackName &&
-      (unsigned int)aTags <
-          (unsigned int)aTrackName) // 如果“[”之后还有双下划线，则字符串非法
+      aTags < aTrackName) // 如果“[”之后还有双下划线，则字符串非法
     return;
 
   if (aTrackName) // 如果有定义轨道名称

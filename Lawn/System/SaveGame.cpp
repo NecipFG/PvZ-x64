@@ -19,7 +19,7 @@
 
 static const char* FILE_COMPILE_TIME_STRING = "Feb 16 200923:03:38";
 static const unsigned int SAVE_FILE_MAGIC_NUMBER = 0xFEEDDEAD;
-static const unsigned int SAVE_FILE_VERSION = 2U;
+static const unsigned int SAVE_FILE_VERSION = 3U;  // bumped: SyncArray now serializes full multi-dim arrays (was first-column-only), changing the layout
 static unsigned int SAVE_FILE_DATE = crc32(0, (Bytef*)FILE_COMPILE_TIME_STRING, strlen(FILE_COMPILE_TIME_STRING));  //[0x6AA7EC]
 
 // 32-bit sizes for compatibility
@@ -2178,6 +2178,9 @@ void FixBoardAfterLoad(Board* theBoard)
 		{
 			aPlant->mApp = theBoard->mApp;
 			aPlant->mBoard = theBoard;
+			// The load frees every particle system (see end of SyncBoard), so the
+			// saved particle ID is now dangling. Null it; the plant recreates on demand.
+			aPlant->mParticleID = ParticleSystemID::PARTICLESYSTEMID_NULL;
 		}
 	}
 	{
@@ -2210,6 +2213,7 @@ void FixBoardAfterLoad(Board* theBoard)
 		{
 			aItem->mApp = theBoard->mApp;
 			aItem->mBoard = theBoard;
+			aItem->mGridItemParticleID = ParticleSystemID::PARTICLESYSTEMID_NULL;
 		}
 	}
 
@@ -2228,6 +2232,13 @@ void FixBoardAfterLoad(Board* theBoard)
 	theBoard->mChallenge->mApp = theBoard->mApp;
 	theBoard->mChallenge->mBoard = theBoard;
 	theBoard->mApp->mMusic->mApp = theBoard->mApp;
+
+	// Board-level cached particle IDs also reference the freed particle systems.
+	// Null them so UpdateIce/etc. recreate particles instead of dereferencing freed ones.
+	for (int i = 0; i < MAX_GRID_SIZE_Y; i++)
+		theBoard->mIceParticleID[i] = ParticleSystemID::PARTICLESYSTEMID_NULL;
+	theBoard->mPoolSparklyParticleID = ParticleSystemID::PARTICLESYSTEMID_NULL;
+	theBoard->mTutorialParticleID = ParticleSystemID::PARTICLESYSTEMID_NULL;
 }
 
 //0x481E00

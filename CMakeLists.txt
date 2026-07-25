@@ -8,6 +8,19 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # ---------------------------------------------------------------------------
+# Build Options
+# ---------------------------------------------------------------------------
+option(PVZ_ENABLE_ASAN "Enable AddressSanitizer and UndefinedBehaviorSanitizer" OFF)
+option(PVZ_ENABLE_WARNINGS "Enable compiler warnings" ON)
+option(PVZ_STRICT_TYPES "Disable -fpermissive and enforce strict type checking" OFF)
+
+if(PVZ_ENABLE_ASAN OR CMAKE_BUILD_TYPE STREQUAL "ASan" OR CMAKE_BUILD_TYPE STREQUAL "Sanitize")
+    message(STATUS "Enabling AddressSanitizer and UndefinedBehaviorSanitizer")
+    add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address,undefined)
+endif()
+
+# ---------------------------------------------------------------------------
 # Source root (project root, one level above SexyAppFramework/)
 # ---------------------------------------------------------------------------
 set(ROOT ${CMAKE_SOURCE_DIR})
@@ -52,6 +65,7 @@ set(GAME_SOURCES
 
     # Lawn – UI widgets
     ${ROOT}/Lawn/Widget/LawnDialog.cpp
+    ${ROOT}/Lawn/Widget/CheatDialog.cpp
     ${ROOT}/Lawn/Widget/AlmanacDialog.cpp
     ${ROOT}/Lawn/Widget/AwardScreen.cpp
     ${ROOT}/Lawn/Widget/ChallengeScreen.cpp
@@ -359,11 +373,17 @@ target_compile_definitions(PvZ-x64 PRIVATE
 # ---------------------------------------------------------------------------
 target_compile_options(PvZ-x64 PRIVATE
     -mwindows                   # Windows subsystem
-    -w                          # suppress all warnings during initial build
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wall>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wextra>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-unused-parameter>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-unused-variable>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-format-security>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-narrowing>
+    $<$<NOT:$<BOOL:${PVZ_ENABLE_WARNINGS}>>:-w>
     # Force-include compat header FIRST: pre-pulls common headers then redefines
     # min/max as type-permissive macros (matching MSVC Windows.h behavior)
     -include ${ROOT}/compat/pvz_compat.h
-    $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>   # relax for decompiled code
+    $<$<NOT:$<BOOL:${PVZ_STRICT_TYPES}>>:$<$<COMPILE_LANGUAGE:CXX>:-fpermissive>>
     $<$<CONFIG:Release>:-O2>
     $<$<CONFIG:Debug>:-g -O0>
 )
@@ -481,8 +501,17 @@ target_compile_definitions(PvZ-Linux PRIVATE
 # Compile flags
 # ---------------------------------------------------------------------------
 target_compile_options(PvZ-Linux PRIVATE
-    -w                          # suppress warnings
-    -fpermissive                # relax for decompiled code
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wall>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wextra>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-unused-parameter>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-unused-variable>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-format-security>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-narrowing>
+    $<$<AND:$<BOOL:${PVZ_ENABLE_WARNINGS}>,$<COMPILE_LANGUAGE:C>>:-Wno-implicit-function-declaration>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-parentheses>
+    $<$<BOOL:${PVZ_ENABLE_WARNINGS}>:-Wno-sign-compare>
+    $<$<NOT:$<BOOL:${PVZ_ENABLE_WARNINGS}>>:-w>
+    $<$<NOT:$<BOOL:${PVZ_STRICT_TYPES}>>:$<$<COMPILE_LANGUAGE:CXX>:-fpermissive>>
     $<$<CONFIG:Release>:-O2>
     $<$<CONFIG:Debug>:-g -O0>
 )

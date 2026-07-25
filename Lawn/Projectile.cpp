@@ -25,8 +25,7 @@ ProjectileDefinition gProjectileDefinition[] = {  //0x69F1C0
 	{ ProjectileType::PROJECTILE_KERNEL,        0,  20  },
 	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
 	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
-	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  },
-	{ ProjectileType::PROJECTILE_SCORCHEDMELON, 0,  80  }
+	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  }
 };
 
 Projectile::Projectile()
@@ -81,7 +80,7 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 		mRotation = -7 * PI / 25;  // DEG_TO_RAD(-50.4f);
 		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
 		mRotation = -2 * PI / 5;  // DEG_TO_RAD(-72.0f);
 		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
@@ -110,11 +109,6 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	{
 		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 13.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_PUFFSHROOM_TRAIL);
 		AttachParticle(mAttachmentID, aParticle, 13.0f, 13.0f);
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
-	{
-		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 20.0f, mPosY + 20.0f, 400000, ParticleEffect::PARTICLE_FIREBALL_TRAIL);
-		AttachParticle(mAttachmentID, aParticle, 20.0f, 20.0f);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_BASKETBALL)
 	{
@@ -216,7 +210,7 @@ Zombie* Projectile::FindCollisionTarget()
 	Zombie* aZombie = nullptr;
 	while (mBoard->IterateZombies(aZombie))
 	{
-		if ((aZombie->IsBoss() || aZombie->mRow == mRow) && aZombie->EffectedByDamage((unsigned int)mDamageRangeFlags))
+		if ((aZombie->mZombieType == ZombieType::ZOMBIE_BOSS || aZombie->mRow == mRow) && aZombie->EffectedByDamage((unsigned int)mDamageRangeFlags))
 		{
 			if (aZombie->mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL && mPosZ >= 45.0f)
 			{
@@ -381,8 +375,7 @@ bool Projectile::IsSplashDamage(Zombie* theZombie)
 	return 
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
-		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
-		mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON;
+		mProjectileType == ProjectileType::PROJECTILE_FIREBALL;
 }
 
 //0x46D230
@@ -427,7 +420,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 		return false;
 	}
 
-	if (theZombie->IsBoss())
+	if (theZombie->mZombieType == ZombieType::ZOMBIE_BOSS)
 	{
 		aRowDeviation = 0;
 	}
@@ -538,7 +531,7 @@ void Projectile::UpdateLobMotion()
 		{
 			aMinCollisionZ = 60.0f;
 		}
-		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
+		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 		{
 			aMinCollisionZ = -35.0f;
 		}
@@ -783,7 +776,7 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 		aPlayHelmSound = false;
 		aPlaySplatSound = false;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
 		mApp->PlayFoley(FoleyType::FOLEY_MELONIMPACT);
 		aPlaySplatSound = false;
@@ -815,7 +808,7 @@ void Projectile::DoImpact(Zombie* theZombie)
 
 	if (IsSplashDamage(theZombie))
 	{
-		if ((mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON) && theZombie)
+		if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL && theZombie)
 		{
 			theZombie->RemoveColdEffects();
 		}
@@ -840,14 +833,6 @@ void Projectile::DoImpact(Zombie* theZombie)
 	else if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
 		mApp->AddTodParticle(aLastPosX + 30.0f, aLastPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_WINTERMELON);
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
-	{
-		mApp->AddTodParticle(aLastPosX + 30.0f, aLastPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_MELONSPLASH);
-		Reanimation* aFireReanim = mApp->AddReanimation(mPosX + 38.0f, mPosY - 20.0f, mRenderOrder + 1, ReanimationType::REANIM_JALAPENO_FIRE);
-		aFireReanim->mAnimTime = 0.25f;
-		aFireReanim->mAnimRate = 24.0f;
-		aFireReanim->OverrideScale(0.7f, 0.4f);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_COBBIG)
 	{
@@ -948,7 +933,6 @@ void Projectile::Update()
 		mProjectileType == ProjectileType::PROJECTILE_CABBAGE || 
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
-		mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON || 
 		mProjectileType == ProjectileType::PROJECTILE_KERNEL || 
 		mProjectileType == ProjectileType::PROJECTILE_BUTTER || 
 		mProjectileType == ProjectileType::PROJECTILE_COBBIG || 
@@ -1037,11 +1021,6 @@ void Projectile::Draw(Graphics* g)
 	else if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
 		aImage = IMAGE_REANIM_WINTERMELON_PROJECTILE;
-		aScale = 1.0f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
-	{
-		aImage = IMAGE_REANIM_MELONPULT_MELON;
 		aScale = 1.0f;
 	}
 	else
@@ -1136,7 +1115,6 @@ void Projectile::DrawShadow(Graphics* g)
 	case ProjectileType::PROJECTILE_BUTTER:
 	case ProjectileType::PROJECTILE_MELON:
 	case ProjectileType::PROJECTILE_WINTERMELON:
-	case ProjectileType::PROJECTILE_SCORCHEDMELON:
 		aOffsetX += 3.0f;
 		aOffsetY += 10.0f;
 		aScale = 1.6f;
@@ -1194,7 +1172,7 @@ Rect Projectile::GetProjectileRect()
 	{
 		return Rect(mX + mWidth / 2 - 115, mY + mHeight / 2 - 115, 230, 230);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SCORCHEDMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
 		return Rect(mX + 20, mY, 60, mHeight);
 	}

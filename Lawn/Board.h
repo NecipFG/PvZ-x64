@@ -259,6 +259,9 @@ public:
 	virtual void					MouseUp(int x, int y, int theClickCount);
 	virtual void					KeyChar(SexyChar theChar);
 	virtual void					KeyUp(KeyCode theKey);
+	bool							HandleHotkey(KeyCode theKey);
+	void							HotkeySelectSeedPacket(int theIndex);
+	void							RequestRestartLevel();
 	virtual void					KeyDown(KeyCode theKey);
 	virtual void					Update();
 	void							UpdateLayers();
@@ -295,9 +298,6 @@ public:
 	void							MouseDownWithTool(int x, int y, int theClickCount, CursorType theCursorType);
 	inline void						MouseDownNormal(int x, int y, int theClickCount) { /* 未发现 */; }
 	bool							CanInteractWithBoardButtons();
-	bool							HandleHotkey(KeyCode theKey);
-	void							HotkeySelectSeedPacket(int theIndex);
-	void							RequestRestartLevel();
 	void							DrawProgressMeter(Graphics* g);
 	void							UpdateToolTip();
 	Plant*							GetTopPlantAt(int theGridX, int theGridY, PlantPriority thePriority);
@@ -361,6 +361,10 @@ public:
 	void							InitZombieWavesForLevel(int theForLevel);
 	unsigned int					SeedNotRecommendedForLevel(SeedType theSeedType);
 	void							DrawTopRightUI(Graphics* g);
+	void							DrawAutoCollectFlash(Graphics* g);
+	void							ToggleSpeedUp();
+	void							ToggleAutoCollect();
+	void							RefreshSpeedUpLabel();
 	void							DrawFog(Graphics* g);
 	void							UpdateFog();
 	/*inline*/ int					LeftFogColumn();

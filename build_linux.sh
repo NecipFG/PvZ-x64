@@ -5,9 +5,10 @@ set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 BUILD_DIR="$ROOT/build-linux"
 
-echo ">>> Configuring Native Linux Build (Release) ..."
+BUILD_TYPE="${1:-Release}"
+echo ">>> Configuring Native Linux Build (${BUILD_TYPE}) ..."
 mkdir -p "$BUILD_DIR"
-cmake -S "$ROOT" -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release
+cmake -S "$ROOT" -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
 
 echo ">>> Building ..."
 cmake --build "$BUILD_DIR" -- -j"$(nproc)"
@@ -30,10 +31,13 @@ fi
 
 
 echo ""
-echo ">>> Native Linux Release Build successful: $BUILD_DIR/PvZ-Linux"
-echo "  This build has cheats DISABLED and DRM enabled."
-echo "  Use build_linux_debug.sh for a debug build with cheats."
+echo ">>> Native Linux ${BUILD_TYPE} Build successful: $BUILD_DIR/PvZ-Linux"
+if [ "$BUILD_TYPE" = "Debug" ]; then
+    echo "  This build has cheats ENABLED."
+else
+    echo "  This build has cheats DISABLED and DRM enabled."
+    echo "  Run 'bash build_linux.sh Debug' for a debug build with cheats."
+fi
 echo "To run:"
 echo "  cd '$BUILD_DIR' && env LD_LIBRARY_PATH=\".\" ./PvZ-Linux"
 echo ""
-

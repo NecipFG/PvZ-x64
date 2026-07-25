@@ -20,7 +20,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 int main(int argc, char* argv[])
 #endif
 {
-#ifndef _WIN32
+#ifdef _WIN32
+	std::string gCommandLineStr = lpCmdLine ? lpCmdLine : "";
+#else
 	setvbuf(stdout, NULL, _IONBF, 0);
 	setvbuf(stderr, NULL, _IONBF, 0);
 	extern std::string gCommandLineStr;
@@ -47,7 +49,31 @@ int main(int argc, char* argv[])
 	gGetCurrentLevelName = LawnGetCurrentLevelName;
 	gAppCloseRequest = LawnGetCloseRequest;
 
+	bool isHeadless = false;
+	int headlessTicks = 500;
+	if (gCommandLineStr.find("--headless") != std::string::npos || gCommandLineStr.find("-headless") != std::string::npos) {
+		isHeadless = true;
+	}
+	size_t ticksPos = gCommandLineStr.find("--ticks");
+	if (ticksPos == std::string::npos) ticksPos = gCommandLineStr.find("-ticks");
+	if (ticksPos != std::string::npos) {
+		int parsedTicks = 0;
+		if (sscanf(gCommandLineStr.c_str() + ticksPos, "%*s %d", &parsedTicks) == 1 && parsedTicks > 0) {
+			headlessTicks = parsedTicks;
+		}
+	}
+
+	if (isHeadless) {
+#ifndef _WIN32
+		setenv("SDL_VIDEODRIVER", "dummy", 1);
+#endif
+		printf("[HEADLESS] Starting headless test run (target ticks: %d)...\n", headlessTicks);
+	}
+
 	gLawnApp = new LawnApp();
+	gLawnApp->mHeadlessMode = isHeadless;
+	gLawnApp->mHeadlessTicksMax = headlessTicks;
+
 	if (Sexy::FileExists("properties\\resources.xml"))
 		gLawnApp->mChangeDirTo = ".";
 	else if (Sexy::FileExists("..\\properties\\resources.xml"))

@@ -20,6 +20,7 @@
 #include "ivorbiscodec.h"
 #include "os.h"
 #include "os_types.h"
+#include <stdlib.h>
 
 #include "asm_arm.h"
   

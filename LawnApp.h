@@ -94,7 +94,11 @@ public:
 	int								mCrazyDaveMessageIndex;							//+0x850
 	SexyString						mCrazyDaveMessageText;							//+0x854
 	int								mAppRandSeed;									//+0x870
+#ifdef _WIN32
 	HICON							mBigArrowCursor;								//+0x874
+#else
+	void*							mBigArrowCursor;								//+0x874
+#endif
 	PopDRMComm*						mDRM;											//+0x878
 	int								mSessionID;										//+0x87C
 	int								mPlayTimeActiveSession;							//+0x880
@@ -144,6 +148,8 @@ public:
 	void							CheckForUpdates() { ; }
 	void							DoUserDialog();
 	void							FinishUserDialog(bool isYes);
+	void							DoCheatDialog();
+	void							FinishCheatDialog(bool isYes);
 	void							DoCreateUserDialog();
 	void							FinishCreateUserDialog(bool isYes);
 	void							DoConfirmDeleteUserDialog(const SexyString& theName);

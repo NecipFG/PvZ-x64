@@ -1,7 +1,9 @@
 # Build directories
 build/
+build-*/
 Debug/
 Debug2/
+Release/
 bin/
 obj/
 
@@ -12,18 +14,19 @@ cmake_install.cmake
 Makefile
 install_manifest.txt
 compile_commands.json
+*.cmake.generated
 
-# IDEs
+# IDEs & Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 .obsidian/
+.vs/
+*.user
+*.suo
 
-# Graphify output
-graphify-out/
-
-# Binaries
+# Binaries & Libraries
 *.exe
 *.dll
 *.so
@@ -34,28 +37,25 @@ graphify-out/
 *.o
 *.pdb
 
-# Exceptions (if any specific binaries should be tracked)
+# Exceptions (tracked runtime DLLs / libs)
 !/bass.dll
 
-# Temp files
+# Temp & Log files
 *.tmp
 *.log
 crash_output.txt
 init_log.txt
 framework_init_log.txt
 exe_symbols.txt
+wine_*.log
+test_stderr.log
 *~
-
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Linux build directories
-build-linux/
-debug-build-linux/
-
-# SDL2 dev libraries (install manually)
+# Dependencies / Third-party dev libs
 sdl2/
 
 # User data
@@ -64,37 +64,16 @@ userdata/
 # AI and Agent configurations
 .agents/
 .claude/
-CLAUDE.md
-GEMINI.md
-AGENTS.md
-QWEN.md
-plans/
 .antigravitycli/
 .cursor/
 .gemini/
+plans/
 
-# Scratch / working files
+# Scratch & Working files
 scratch/
 zombie/
 DitheredOriginalsBackup/
 build_assets_backup/
-GRAPH_GUIDE.md
-query_graph.py
-query_graph.sh
-build_linux_debug.sh
 
-# Test output
-*.txt
+# Test output & Misc generated files
 test_*.log
-
-# Misc junk
-archive.zip
-batch_dither.py
-build_symbols.txt
-PreviousModPlantFile.cpp
-x64_conversion_logic.md
-DrawButton_disasm.txt
-ChallengeScreen_S.txt
-crash_source.txt
-wine_*.log
-test_stderr.log

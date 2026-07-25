@@ -34,7 +34,7 @@ ContinueDialog::ContinueDialog(LawnApp* theApp) : LawnDialog(
     CalcSize(10, 60);
 }
 
-//0x4333D0��0x4333F0
+//0x4333D00x4333F0
 ContinueDialog::~ContinueDialog()
 {
     delete mContinueButton;
@@ -119,6 +119,10 @@ void ContinueDialog::ButtonDepress(int theId)
         }
 
         RestartLoopingSounds();
+        // A loaded board only ever reaches SCENE_PLAYING here: StartPlaying() (the only
+        // other setter) runs solely on the new-game path. Without this, Board::UpdateGame()
+        // early-returns on `mGameScene != SCENE_PLAYING` and the resumed board is frozen.
+        mApp->mGameScene = GameScenes::SCENE_PLAYING;
         mApp->KillDialog(mId);
     }
     else if (theId == ContinueDialog::ContinueDialog_NewGame)

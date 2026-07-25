@@ -1,7 +1,6 @@
 #ifndef __CHALLENGE_H__
 #define __CHALLENGE_H__
 
-#include <vector>
 #include "../ConstEnums.h"
 #include "../GameConstants.h"
 #include "../Sexy.TodLib/FilterEffect.h"
@@ -72,9 +71,9 @@ public:
     int                     mScaryPotterPots;                                   //+0xB0
     int                     mRainCounter;                                       //+0xB4
     int                     mTreeOfWisdomTalkIndex;                             //+0xB8
+
 public:
     Challenge();
-    ~Challenge();
 
     void                    StartLevel();
     void                    BeghouledPopulateBoard();
@@ -178,10 +177,7 @@ public:
     int                     ScaryPotterCountPots();
     void                    IZombieInitLevel();
     void                    DrawRain(Graphics* g);
-    void                    DrawRainBackground(Graphics* g);
     void                    DrawWeather(Graphics* g);
-    void                    DrawWeatherBackground(Graphics* g);
-    void                    DrawWeatherForeground(Graphics* g);
     void                    SquirrelUpdate();
     /*inline*/ int          SquirrelCountUncaught();
     void                    SquirrelStart();
@@ -236,6 +232,7 @@ public:
     void                    TreeOfWisdomSayRepeat();
     bool                    TreeOfWisdomCanFeed();
 
+    GridItem*               GetPortalLeftRight(int theGridX, int theGridY, bool theToLeft = true);
 };
 
 extern SeedType gArtChallengeWallnut[6][9];
@@ -246,7 +243,7 @@ class ZombieAllowedLevels
 {
 public:
     ZombieType                      mZombieType;
-    int                             mAllowedOnLevel[60];
+    int                             mAllowedOnLevel[50];
 };
 extern int gZombieWaves[NUM_LEVELS]; //0x6A34E8
 extern ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES];  //0x6A35B0

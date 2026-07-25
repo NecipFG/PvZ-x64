@@ -488,7 +488,7 @@ void CutScene::PlaceStreetZombies()
 		return;
 
 	mPlacedZombies = true;
-	if (mApp->IsFinalBossLevel() || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID)
+	if (mApp->IsFinalBossLevel())
 		return;
 
 	// 以下统计出怪列表中各种可预览的僵尸的数量
@@ -624,8 +624,7 @@ bool CutScene::IsNonScrollingCutscene()
 		mApp->IsWhackAZombieLevel() ||
 		mApp->IsShovelLevel() || 
 		mApp->IsSquirrelLevel() || 
-		mApp->IsWallnutBowlingLevel() ||
-		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID;
+		mApp->IsWallnutBowlingLevel();
 }
 
 //0x43A7B0
@@ -723,8 +722,7 @@ void CutScene::StartLevelIntro()
 		mApp->mGameMode == GameMode::GAMEMODE_TREE_OF_WISDOM ||
 		mApp->IsIZombieLevel() ||
 		mApp->IsWhackAZombieLevel() ||
-		mApp->IsScaryPotterLevel() ||
-		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID)
+		mApp->IsScaryPotterLevel())
 	{
 		mReadySetPlantTime = 0;
 	}
@@ -835,14 +833,6 @@ void CutScene::StartLevelIntro()
 			mCrazyDaveDialogStart = 3200;
 			mBoard->mStoreButton->mBtnNoDraw = true;
 		}
-	}
-	else if (aLevel == 51 && mApp->IsAdventureMode() && !isRestart)
-	{
-		mCrazyDaveDialogStart = 3500;
-	}
-	else if (aLevel == 58 && mApp->IsAdventureMode() && !isRestart)
-	{
-		mCrazyDaveDialogStart = 3600;
 	}
 	if (mCrazyDaveDialogStart != -1)
 	{

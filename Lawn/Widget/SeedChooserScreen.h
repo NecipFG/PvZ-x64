@@ -60,7 +60,7 @@ public:
     GameButton*             mAlmanacButton;                     //+0x98
     GameButton*             mMenuButton;                        //+0x9C
     GameButton*             mImitaterButton;                    //+0xA0
-    ChosenSeed              mChosenSeeds[NUM_SEED_TYPES];       //+0xA4
+    ChosenSeed              mChosenSeeds[NUM_SEEDS_IN_CHOOSER]; // Fix buffer overflow (NUM_SEEDS_IN_CHOOSER > NUM_SEED_TYPES)
     LawnApp*                mApp;                               //+0xD10
     Board*                  mBoard;                             //+0xD14
     int                     mNumSeedsToChoose;                  //+0xD18

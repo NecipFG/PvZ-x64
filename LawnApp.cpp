@@ -23,6 +23,7 @@
 #include "Lawn/Widget/NewUserDialog.h"
 #include "Lawn/Widget/SeedChooserScreen.h"
 #include "Lawn/Widget/StoreScreen.h"
+#include "Lawn/Widget/CheatDialog.h"
 #include "Lawn/Widget/TitleScreen.h"
 #include "Lawn/Widget/UserDialog.h"
 #include "Lawn/ZenGarden.h"
@@ -140,8 +141,12 @@ LawnApp::LawnApp() {
   mCrazyDaveBlinkCounter = 0;
   mCrazyDaveBlinkReanimID = ReanimationID::REANIMATIONID_NULL;
   mCrazyDaveMessageIndex = -1;
+#ifdef _WIN32
   mBigArrowCursor =
       LoadCursor(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDC_CURSOR1));
+#else
+  mBigArrowCursor = nullptr;
+#endif
   mDRM = nullptr;
 
   delete mResourceManager;
@@ -367,6 +372,14 @@ void LawnApp::PreNewGame(GameMode theGameMode, bool theLookForSavedGame) {
   // }
 
   mGameMode = theGameMode;
+  if (mPlayerInfo == nullptr) {
+    mPlayerInfo = mProfileMgr->GetAnyProfile();
+    if (mPlayerInfo == nullptr) {
+      mPlayerInfo = mProfileMgr->AddProfile(_S("Player"));
+      mProfileMgr->Save();
+    }
+  }
+
   if (theLookForSavedGame && TryLoadGame())
     return;
 
@@ -394,6 +407,8 @@ void LawnApp::StartPlaying() {
 
 // 0x44F700
 bool LawnApp::SaveFileExists() {
+  if (mPlayerInfo == nullptr)
+    return false;
   std::string aFileName =
       GetSavedGameName(GameMode::GAMEMODE_ADVENTURE, mPlayerInfo->mId);
   return this->FileExists(aFileName);
@@ -401,6 +416,8 @@ bool LawnApp::SaveFileExists() {
 
 // 0x44F7A0
 bool LawnApp::TryLoadGame() {
+  if (mPlayerInfo == nullptr)
+    return false;
   std::string aSaveName = GetSavedGameName(mGameMode, mPlayerInfo->mId);
   mMusic->StopAllMusic();
 
@@ -421,6 +438,14 @@ bool LawnApp::TryLoadGame() {
 // 0x44F890
 void LawnApp::NewGame() {
   mFirstTimeGameSelector = false;
+
+  if (mPlayerInfo == nullptr) {
+    mPlayerInfo = mProfileMgr->GetAnyProfile();
+    if (mPlayerInfo == nullptr) {
+      mPlayerInfo = mProfileMgr->AddProfile(_S("Player"));
+      mProfileMgr->Save();
+    }
+  }
 
   MakeNewBoard();
   mBoard->InitLevel();
@@ -579,6 +604,10 @@ void LawnApp::DoBackToMain() {
   WriteCurrentUserConfig();
   KillNewOptionsDialog();
   KillBoard();
+  // The fast-forward toggle lives on the app, so it would otherwise stay active on the
+  // main menu / next game. Reset it (and the per-board auto-collect toggle dies with the
+  // board killed above) when leaving a level.
+  mUpdateMultiplier = 1.0;
   ShowGameSelector();
 }
 
@@ -739,6 +768,25 @@ void LawnApp::FinishUserDialog(bool isYes) {
     }
 
     KillDialog(Dialogs::DIALOG_USERDIALOG);
+  }
+}
+
+void LawnApp::DoCheatDialog() {
+  KillDialog(Dialogs::DIALOG_CHEAT);
+
+  CheatDialog *aDialog = new CheatDialog(this);
+  CenterDialog(aDialog, aDialog->mWidth, aDialog->mHeight);
+  AddDialog(Dialogs::DIALOG_CHEAT, aDialog);
+  mWidgetManager->SetFocus(aDialog);
+}
+
+void LawnApp::FinishCheatDialog(bool isYes) {
+  CheatDialog *aDialog = (CheatDialog *)GetDialog(Dialogs::DIALOG_CHEAT);
+  if (aDialog) {
+    if (isYes) {
+      if (!aDialog->ApplyCheat()) return;
+    }
+    KillDialog(Dialogs::DIALOG_CHEAT);
   }
 }
 
@@ -1132,6 +1180,10 @@ void LawnApp::Init() {
   }
   if (mPlayerInfo == nullptr) {
     mPlayerInfo = mProfileMgr->GetAnyProfile();
+  }
+  if (mPlayerInfo == nullptr) {
+    mPlayerInfo = mProfileMgr->AddProfile(_S("Player"));
+    mProfileMgr->Save();
   }
 
   mMaxExecutions = GetInteger("MaxExecutions", 0);
@@ -1760,6 +1812,10 @@ void LawnApp::ButtonDepress(int theId) {
       FinishUserDialog(true);
       return;
 
+    case Dialogs::DIALOG_CHEAT:
+      FinishCheatDialog(true);
+      return;
+
     case Dialogs::DIALOG_CREATEUSER:
       FinishCreateUserDialog(true);
       return;
@@ -1812,6 +1868,10 @@ void LawnApp::ButtonDepress(int theId) {
 
     case Dialogs::DIALOG_USERDIALOG:
       FinishUserDialog(false);
+      return;
+
+    case Dialogs::DIALOG_CHEAT:
+      FinishCheatDialog(false);
       return;
 
     case Dialogs::DIALOG_CREATEUSER:

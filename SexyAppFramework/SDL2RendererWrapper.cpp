@@ -5,6 +5,7 @@
 #include "MemoryImage.h"
 #include "DDImage.h"
 #include "DDInterface.h"
+#include "SexyAppBase.h"
 #include <cmath>
 #include <vector>
 
@@ -63,11 +64,20 @@ bool SDL2RendererWrapper::Init(HWND hWnd, int width, int height, bool windowed)
     if (mWindow == nullptr)
     {
         FrameworkLog("SDL2RendererWrapper::Init: Creating native SDL window.\n");
+        Uint32 windowFlags = (windowed ? 0 : SDL_WINDOW_FULLSCREEN);
+        if (gSexyAppBase && gSexyAppBase->mHeadlessMode)
+        {
+            windowFlags |= SDL_WINDOW_HIDDEN;
+        }
+        else
+        {
+            windowFlags |= SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
+        }
         mWindow = SDL_CreateWindow(
-            "SexyAppFramework SDL2 Modding Base",
+            "Plants vs. Zombies",
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             mWidth, mHeight,
-            SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | (windowed ? 0 : SDL_WINDOW_FULLSCREEN)
+            windowFlags
         );
     }
 
@@ -104,10 +114,17 @@ bool SDL2RendererWrapper::Init(HWND hWnd, int width, int height, bool windowed)
     mTargetFPS = targetFps;
     FrameworkLog("SDL2RendererWrapper::Init: Target FPS is %d, VSync is %s\n", mTargetFPS, useVSync ? "ON" : "OFF");
 
+    // Set scale quality hint to 2 ("best" / Lanczos3 high-quality scaling filter)
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+
     Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE;
     if (useVSync)
     {
         flags |= SDL_RENDERER_PRESENTVSYNC;
+    }
+    if (gSexyAppBase && gSexyAppBase->mHeadlessMode)
+    {
+        flags = SDL_RENDERER_SOFTWARE;
     }
 
     // Hardware accelerated renderer
@@ -116,6 +133,10 @@ bool SDL2RendererWrapper::Init(HWND hWnd, int width, int height, bool windowed)
         mWindow, -1,
         flags
     );
+    if (mRenderer == nullptr && (gSexyAppBase && gSexyAppBase->mHeadlessMode))
+    {
+        mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_SOFTWARE);
+    }
 
     if (mRenderer == nullptr)
     {
@@ -123,6 +144,9 @@ bool SDL2RendererWrapper::Init(HWND hWnd, int width, int height, bool windowed)
         Cleanup();
         return false;
     }
+
+    // Set logical resolution to 800x600 for automatic window scaling and mouse coordinate mapping
+    SDL_RenderSetLogicalSize(mRenderer, mWidth, mHeight);
 
     SDL_RendererInfo rendererInfo;
     if (SDL_GetRendererInfo(mRenderer, &rendererInfo) == 0)
@@ -329,6 +353,8 @@ void SDL2RendererWrapper::Present()
 void SDL2RendererWrapper::SetClipRect(const Rect& clipRect)
 {
     SDL_Rect sdlRect = { clipRect.mX, clipRect.mY, clipRect.mWidth, clipRect.mHeight };
+    if (sdlRect.w < 0) sdlRect.w = 0;
+    if (sdlRect.h < 0) sdlRect.h = 0;
     SDL_RenderSetClipRect(mRenderer, &sdlRect);
 }
 
@@ -528,6 +554,8 @@ void SDL2RendererWrapper::BltMatrix(Image* srcImage, float x, float y, const Sex
 
 void SDL2RendererWrapper::BltTrianglesTex(Image* texture, const TriVertex vertices[][3], int numTriangles, const Rect& clipRect, const Color& color, int drawMode, float tx, float ty, bool blend)
 {
+    if (numTriangles <= 0 || vertices == nullptr || texture == nullptr) return;
+
     SDL_Texture* sdlTex = GetTextureForImage(texture);
     if (!sdlTex) return;
 

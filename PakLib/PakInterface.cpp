@@ -110,12 +110,19 @@ bool PakInterface::AddPakFile(const std::string& theFileName)
 
 		uchar aNameWidth = 0;
 		char aName[256];
-		FRead(&aNameWidth, 1, 1, aFP);
-		FRead(aName, 1, aNameWidth, aFP);
-		aName[aNameWidth] = 0;
+		if (FRead(&aNameWidth, 1, 1, aFP) != 1)
+			break;
+		size_t aReadBytes = (aNameWidth < sizeof(aName)) ? aNameWidth : sizeof(aName) - 1;
+		if (FRead(aName, 1, aReadBytes, aFP) != aReadBytes)
+			break;
+		aName[aReadBytes] = 0;
 
 		int aSrcSize = 0;
-		FRead(&aSrcSize, sizeof(int), 1, aFP);
+		if (FRead(&aSrcSize, sizeof(int), 1, aFP) != 1 || aSrcSize < 0)
+		{
+			FClose(aFP);
+			return false;
+		}
 		FILETIME aFileTime;
 		FRead(&aFileTime, sizeof(FILETIME), 1, aFP);
 
@@ -127,6 +134,11 @@ bool PakInterface::AddPakFile(const std::string& theFileName)
 		aPakRecord->mSize = aSrcSize;
 		aPakRecord->mFileTime = aFileTime;
 
+		if (aPos > aFileSize - aSrcSize)
+		{
+			FClose(aFP);
+			return false;
+		}
 		aPos += aSrcSize;
 	}
 
@@ -377,13 +389,14 @@ bool PakInterface::PFindNext(PFindData* theFindData, LPWIN32_FIND_DATA lpFindFil
 					aFileName + strlen(aFileName) - (theFindData->mFindCriteria.length() - aStarPos) + 1) == 0))
 				{
 					// Matches before and after star
-					memset(lpFindFileData, 0, sizeof(lpFindFileData));
+					memset(lpFindFileData, 0, sizeof(WIN32_FIND_DATA));
 					
 					int aLastSlashPos = (int) anItr->second.mFileName.rfind('\\');
-					if (aLastSlashPos == -1)
-						strcpy(lpFindFileData->cFileName, anItr->second.mFileName.c_str());
-					else
-						strcpy(lpFindFileData->cFileName, anItr->second.mFileName.c_str() + aLastSlashPos + 1);
+					const char* srcStr = (aLastSlashPos == -1) ? 
+						anItr->second.mFileName.c_str() : 
+						anItr->second.mFileName.c_str() + aLastSlashPos + 1;
+					strncpy(lpFindFileData->cFileName, srcStr, sizeof(lpFindFileData->cFileName) - 1);
+					lpFindFileData->cFileName[sizeof(lpFindFileData->cFileName) - 1] = 0;
 
 					const char* aEndStr = aFileName + strlen(aFileName) - (theFindData->mFindCriteria.length() - aStarPos) + 1;
 					if (strchr(aEndStr, '\\') != NULL)

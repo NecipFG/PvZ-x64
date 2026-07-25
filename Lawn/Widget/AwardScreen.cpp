@@ -63,7 +63,7 @@ AwardScreen::AwardScreen(LawnApp* theApp, AwardType theAwardType)
             TodLoadResources("DelayLoad_ZombieNote");
             TodLoadResources("DelayLoad_ZombieNote4");
         }
-        else if (aLevel == 50 || aLevel == 60)
+        else if (aLevel == 50)
         {
             TodLoadResources("DelayLoad_Background1");
             TodLoadResources("DelayLoad_ZombieNote");
@@ -172,7 +172,7 @@ bool AwardScreen::IsPaperNote()
         return true;
 
     int aLevel = mApp->mPlayerInfo->GetLevel();
-    return mApp->IsAdventureMode() && (aLevel == 10 || aLevel == 20 || aLevel == 30 || aLevel == 40 || aLevel == 50 || aLevel == 60);
+    return mApp->IsAdventureMode() && (aLevel == 10 || aLevel == 20 || aLevel == 30 || aLevel == 40 || aLevel == 50);
 }
 
 //0x4064D0
@@ -308,7 +308,7 @@ void AwardScreen::Draw(Graphics* g)
             DrawBottom(g, _S("[FOUND_WATERING_CAN]"), _S("[WATERING_CAN]"), _S("[WATERING_CAN_DESCRIPTION]"));
             g->DrawImage(Sexy::IMAGE_WATERINGCAN, BOARD_WIDTH / 2 - Sexy::IMAGE_WATERINGCAN->mWidth / 2, 160);
         }
-        else if (aLevel == 50 || aLevel == 60)
+        else if (aLevel == 50)
         {
             g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
             g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
@@ -319,11 +319,6 @@ void AwardScreen::Draw(Graphics* g)
         {
             DrawBottom(g, _S("[WIN_MESSAGE1]"), _S("[SILVER_SUNFLOWER_TROPHY]"), _S("[WIN_MESSAGE2]"));
             TodDrawImageCelCenterScaledF(g, Sexy::IMAGE_SUNFLOWER_TROPHY, 325, 65, 0, 0.7f, 0.7f);
-        }
-        else if (aLevel >= 51 && aLevel <= 59)
-        {
-            DrawBottom(g, _S("STAGE COMPLETE!"), _S("BAG OF COINS"), _S("You survived the onslaught! Dave awarded you a bag of gold coins."));
-            g->DrawImage(Sexy::IMAGE_MONEYBAG_HI_RES, BOARD_WIDTH / 2 - Sexy::IMAGE_MONEYBAG_HI_RES->mWidth / 2, 160);
         }
         else
         {

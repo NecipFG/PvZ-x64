@@ -119,8 +119,6 @@ public:
     int                             mChilledCounter;                            //+0xAC
     int                             mButteredCounter;                           //+0xB0
     int                             mIceTrapCounter;                            //+0xB4
-    int                             mPoisonCounter;
-    int                             mPoisonDamage;
     bool                            mMindControlled;                            //+0xB8
     bool                            mBlowingAway;                               //+0xB9
     bool                            mHasHead;                                   //+0xBA
@@ -164,8 +162,6 @@ public:
     bool                            mIsFireBall;                                //+0x14C
     ReanimationID                   mMoweredReanimID;                           //+0x150
     int                             mLastPortalX;                               //+0x154
-    int                             mDashCount;
-    int                             mDashTimer;
 
 public:
     Zombie();
@@ -366,7 +362,6 @@ public:
     void                            DropFlag();
     void                            DropPole();
     void                            DrawBossBackArm(Graphics* g, const ZombieDrawPosition& theDrawPos);
-    void                            UpdateZombieDashAOE();
     static void                     PreloadZombieResources(ZombieType theZombieType);
     void                            BossStartDeath();
     void                            RemoveColdEffects();
@@ -398,7 +393,6 @@ public:
     void                            SetupReanimForLostArm(unsigned int theDamageFlags);
     bool                            IsSquashTarget(Plant* theExcept);
     static /*inline*/ bool			IsZombotany(ZombieType theZombieType);
-    bool                            IsBoss() const;
 };
 
 class ZombieDefinition

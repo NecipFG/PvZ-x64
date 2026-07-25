@@ -26,7 +26,6 @@ enum MusicTune
 	MUSIC_TUNE_CONVEYER,						// 传送带关卡
 	MUSIC_TUNE_FINAL_BOSS_BRAINIAC_MANIAC,		// 僵王博士关卡
 	MUSIC_TUNE_CREDITS_ZOMBIES_ON_YOUR_LAWN,	// MV
-	MUSIC_TUNE_ZOMBOTANY,
 	NUM_MUSIC_TUNES
 };
 
@@ -37,7 +36,6 @@ enum MusicFile
 	MUSIC_FILE_DRUMS,
 	MUSIC_FILE_HIHATS,
 	MUSIC_FILE_CREDITS_ZOMBIES_ON_YOUR_LAWN,
-	MUSIC_FILE_ZOMBOTANY,
 	NUM_MUSIC_FILES
 };
 
@@ -88,7 +86,6 @@ public:
 	bool						mMusicDisabled;						//+0x41
 	int							mFadeOutCounter;					//+0x44
 	int							mFadeOutDuration;					//+0x48
-	HSYNC						mZombotanySync;
 
 public:
 	Music();

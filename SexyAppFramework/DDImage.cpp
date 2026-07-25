@@ -164,6 +164,15 @@ void DDImage::SetSurface(LPDIRECTDRAWSURFACE theSurface)
 
 bool DDImage::GenerateDDSurface()
 {
+	// SDL2 renders from textures built off GetBits(); it never uses DirectDraw
+	// surfaces. Bail before LockSurface(): in SDL2 mode LockSurface() does not fill
+	// mLockedSurfaceDesc, so the bit-depth test below falls through to `return false`
+	// and skips UnlockSurface(), leaking a lock that makes ~DDImage assert
+	// `mLockCount == 0` on shutdown. (Mirrors the `if (gSDL2Renderer)` guard every
+	// other DDImage draw method has.)
+	if (gSDL2Renderer != nullptr)
+		return false;
+
 	CheckInterface();
 	if (mDDInterface == NULL)
 		return false;
@@ -556,11 +565,12 @@ bool DDImage::GenerateDDSurface()
 	}
 	else
 	{
+		UnlockSurface();
 		return false;
 	}
 
 	UnlockSurface();
-	
+
 	return true;
 }
 

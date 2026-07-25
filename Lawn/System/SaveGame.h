@@ -60,7 +60,15 @@ public:
         } 
     }
     template <typename T> inline void SyncEnum(T& theEnum) { int aVal = (int)theEnum; SyncInt(aVal); if (mReading) theEnum = (T)aVal; }
-    template <typename T, int N> void SyncArray(T(&theArray)[N]) { for (int i = 0; i < N; i++) SyncInt((int&)theArray[i]); }
+    // Recursively sync every scalar element of a possibly MULTI-dimensional array.
+    // (The old flat version did `SyncInt((int&)theArray[i])`; for a 2-D+ array the
+    //  element type T deduces to a whole sub-array row, so `(int&)` aliased an entire
+    //  row to one int and only the FIRST column was synced. On load the remaining
+    //  columns kept uninitialized heap bytes -> e.g. garbage zombie types in
+    //  mZombiesInWave[MAX_ZOMBIE_WAVES][MAX_ZOMBIES_IN_WAVE] crashing the spawner.)
+    template <typename T> inline void SyncArrayElement(T& theVal) { SyncInt((int&)theVal); }
+    template <typename T, int N> inline void SyncArrayElement(T(&theSubArray)[N]) { for (int i = 0; i < N; i++) SyncArrayElement(theSubArray[i]); }
+    template <typename T, int N> void SyncArray(T(&theArray)[N]) { for (int i = 0; i < N; i++) SyncArrayElement(theArray[i]); }
     template <typename T, int N> void SyncFloatArray(T(&theArray)[N]) { for (int i = 0; i < N; i++) SyncFloat((float&)theArray[i]); }
     template <typename T, int N> void SyncBoolArray(T(&theArray)[N]) { for (int i = 0; i < N; i++) SyncBool((bool&)theArray[i]); }
 };

@@ -3,9 +3,8 @@
 
 #include "LawnDialog.h"
 
-#define NUM_ALMANAC_SEEDS 100
-#define NUM_ALMANAC_ZOMBIES 29
-
+#define NUM_ALMANAC_SEEDS 49
+#define NUM_ALMANAC_ZOMBIES 26
 
 constexpr const float			ALMANAC_PLANT_POSITION_X		= 578.0f;
 constexpr const float			ALMANAC_PLANT_POSITION_Y		= 140.0f;
@@ -29,9 +28,7 @@ private:
 		ALMANAC_BUTTON_CLOSE = 0,
 		ALMANAC_BUTTON_PLANT = 1,
 		ALMANAC_BUTTON_ZOMBIE = 2,
-		ALMANAC_BUTTON_INDEX = 3,
-		ALMANAC_BUTTON_PLANT_BACK = 4,
-		ALMANAC_BUTTON_PLANT_NEXT = 5
+		ALMANAC_BUTTON_INDEX = 3
 	};
 
 public:
@@ -40,10 +37,7 @@ public:
 	GameButton*					mIndexButton;			//+0x174
 	GameButton*					mPlantButton;			//+0x178
 	GameButton*					mZombieButton;			//+0x17C
-	GameButton*					mPlantBackBtn;
-	GameButton*					mPlantNextBtn;
 	AlmanacPage					mOpenPage;				//+0x180
-	int							mPlantPage;
 	Reanimation*				mReanim[4];				//+0x184
 	SeedType					mSelectedSeed;			//+0x194
 	ZombieType					mSelectedZombie;		//+0x198

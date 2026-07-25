@@ -63,7 +63,7 @@ bool sSortByNonIncreasingHeight(const ReanimAtlasImage& image1, const ReanimAtla
 	else if (image1.mWidth != image2.mWidth)
 		return image1.mWidth > image2.mWidth;
 	else
-		return (unsigned int)&image1 > (unsigned int)&image2;
+		return &image1 > &image2;
 }
 
 static int GetClosestPowerOf2Above(int theNum)
@@ -242,7 +242,7 @@ void ReanimAtlas::ReanimAtlasCreate(ReanimatorDefinition* theReanimDef)
 			{
 				int aImageIndex = FindImage(aImage);
 				TOD_ASSERT(aImageIndex >= 0);
-				aImage = (Image*)(aImageIndex + 1);  // ★ 将图片在数组中的序号作为 Image* 修改动画定义
+				aImage = (Image*)(intptr_t)(aImageIndex + 1);  // ★ 将图片在数组中的序号作为 Image* 修改动画定义
 			}
 		}
 	}

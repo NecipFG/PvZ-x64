@@ -7,7 +7,6 @@
 #include "../../SexyAppFramework/Graphics.h"
 #include "../../SexyAppFramework/DDInterface.h"
 #include "../../SexyAppFramework/D3DInterface.h"
-#include "../../SexyAppFramework/SDL2RendererWrapper.h"
 
 //0x469A60
 void PoolEffect::PoolEffectInitialize()
@@ -229,7 +228,6 @@ void PoolEffect::PoolEffectDraw(Sexy::Graphics* g, bool theIsNight)
 
     UpdateWaterEffect(g);
 #ifdef _WIN32
-    if (Sexy::gSDL2Renderer == nullptr)
     {
         D3DInterface* anInterface = ((DDImage*)g->mDestImage)->mDDInterface->mD3DInterface;
         anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
@@ -238,7 +236,6 @@ void PoolEffect::PoolEffectDraw(Sexy::Graphics* g, bool theIsNight)
 #endif
     g->DrawTrianglesTex(mCausticImage, aVertArray[2], 150);
 #ifdef _WIN32
-    if (Sexy::gSDL2Renderer == nullptr)
     {
         D3DInterface* anInterface = ((DDImage*)g->mDestImage)->mDDInterface->mD3DInterface;
         anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");

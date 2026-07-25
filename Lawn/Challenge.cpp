@@ -29,8 +29,6 @@
 #include "../Sexy.TodLib/TodParticle.h"
 #include "../Sexy.TodLib/TodStringFile.h"
 #include "../SexyAppFramework/WidgetManager.h"
-#include "../Sexy.TodLib/Attachment.h"
-
 
 int gZombieWaves[NUM_LEVELS] = {  //0x6A34E8
 	4,  6,  8,  10, 8,  10, 20, 10, 20, 20,
@@ -48,12 +46,10 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_FLAG, 
 		{
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -68,7 +64,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_POLEVAULTER,
@@ -78,7 +73,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-			1, 0, 1, 1, 0, 1, 1, 0, 1, 1,
 		}
 	},
 	{ ZOMBIE_PAIL,
@@ -88,7 +82,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
 			0, 1, 0, 0, 1, 0, 0, 0, 1, 1,
-			0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_NEWSPAPER,
@@ -98,7 +91,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 1, 0, 1, 1, 0, 1, 1, 0, 1,
 		}
 	},
 	{ ZOMBIE_DOOR,
@@ -108,7 +100,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 1, 0, 1, 1, 0, 1, 1,
 		}
 	},
 	{ ZOMBIE_FOOTBALL,
@@ -118,7 +109,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_DANCER,
@@ -128,7 +118,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_BACKUP_DANCER,
@@ -137,8 +126,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		}
 	},
 	{ ZOMBIE_DUCKY_TUBE, { 0 } },
@@ -147,7 +135,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 1, 1, 1, 0, 1, 0, 0, 1,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
@@ -159,7 +146,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_BOBSLED,
@@ -169,7 +155,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_DOLPHIN_RIDER,
@@ -178,7 +163,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
 	},
@@ -189,7 +173,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-			0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_BALLOON,
@@ -199,7 +182,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 1, 1, 0, 0, 0, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_DIGGER,
@@ -209,7 +191,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 1, 1, 0, 0, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_POGO,
@@ -219,7 +200,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_YETI, {0} },
@@ -230,7 +210,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 1, 0, 0, 0, 0, 1, 0, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_LADDER,
@@ -240,7 +219,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 1, 1, 1, 0, 1, 0, 1, 1,
-			0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_CATAPULT,
@@ -250,7 +228,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
-			0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_GARGANTUAR,
@@ -260,7 +237,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_IMP,
@@ -269,7 +245,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 		}
 	},
@@ -281,16 +256,6 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 	{ ZOMBIE_SQUASH_HEAD, {0} },
 	{ ZOMBIE_TALLNUT_HEAD, {0} },
 	{ ZOMBIE_REDEYE_GARGANTUAR, {0} },
-	{ ZOMBIE_DASH_AOE,
-		{
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-			0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-		}
-	},
 };
 
 SeedType gArtChallengeWallnut[MAX_GRID_SIZE_Y][MAX_GRID_SIZE_X] = {  //0x6A3260
@@ -348,10 +313,7 @@ Challenge::Challenge()
 	memset(mBeghouledEated, 0, sizeof(mBeghouledEated));
 	for (int i = 0; i < (int)BeghouledUpgrade::NUM_BEGHOULED_UPGRADES; i++)
 		mBeghouledPurcasedUpgrade[i] = false;
-}
 
-Challenge::~Challenge()
-{
 	if (mApp->mBoard && mApp->mGameMode == GAMEMODE_CHALLENGE_SLOT_MACHINE)
 	{
 		Rect aHandleRect = SlotMachineGetHandleRect();
@@ -391,20 +353,10 @@ void Challenge::InitLevel()
 	}
 	if (mApp->IsFinalBossLevel())
 	{
-		if (mBoard->mLevel == 60)
-		{
-			mBoard->mSeedBank->AddSeed(SEED_GATLINGPEA);
-			mBoard->mSeedBank->AddSeed(SEED_TORCHWOOD);
-			mBoard->mSeedBank->AddSeed(SEED_WINTERMELON);
-			mBoard->mSeedBank->AddSeed(SEED_EXPLODE_O_NUT);
-		}
-		else
-		{
-			mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
-			mBoard->mSeedBank->AddSeed(SEED_JALAPENO);
-			mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
-			mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
-		}
+		mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
+		mBoard->mSeedBank->AddSeed(SEED_JALAPENO);
+		mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
+		mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
 		mConveyorBeltCounter = 1000;
 	}
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_ZEN_GARDEN)
@@ -561,7 +513,7 @@ void Challenge::StartLevel()
 		mBoard->mCurrentWave = 9;
 		mBoard->mZombieCountDown = 2400;
 	}
-	if (aGameMode == GAMEMODE_CHALLENGE_BOBSLED_BONANZA)
+	if (aGameMode == GAMEMODE_CHALLENGE_AIR_RAID || aGameMode == GAMEMODE_CHALLENGE_BOBSLED_BONANZA)
 	{
 		mBoard->mZombieCountDown = 4500;
 	}
@@ -1773,44 +1725,19 @@ void Challenge::UpdateConveyorBelt()
 	}
 	else if (mApp->IsFinalBossLevel())
 	{
-		if (mBoard->mLevel == 60)
-		{
-			aSeedPickCount = 9;
-			aSeedPickArray[0].mItem = SEED_GATLINGPEA;
-			aSeedPickArray[0].mWeight = 15;
-			aSeedPickArray[1].mItem = SEED_TORCHWOOD;
-			aSeedPickArray[1].mWeight = 12;
-			aSeedPickArray[2].mItem = SEED_WINTERMELON;
-			aSeedPickArray[2].mWeight = 15;
-			aSeedPickArray[3].mItem = SEED_SPIKEROCK;
-			aSeedPickArray[3].mWeight = 12;
-			aSeedPickArray[4].mItem = SEED_EXPLODE_O_NUT;
-			aSeedPickArray[4].mWeight = 15;
-			aSeedPickArray[5].mItem = SEED_JALAPENO;
-			aSeedPickArray[5].mWeight = 10;
-			aSeedPickArray[6].mItem = SEED_ICESHROOM;
-			aSeedPickArray[6].mWeight = 8;
-			aSeedPickArray[7].mItem = SEED_DOOMSHROOM;
-			aSeedPickArray[7].mWeight = 8;
-			aSeedPickArray[8].mItem = SEED_PUMPKINSHELL;
-			aSeedPickArray[8].mWeight = 5;
-		}
-		else
-		{
-			aSeedPickCount = 6;
-			aSeedPickArray[0].mItem = SEED_FLOWERPOT;
-			aSeedPickArray[0].mWeight = 55;
-			aSeedPickArray[1].mItem = SEED_MELONPULT;
-			aSeedPickArray[1].mWeight = 10;
-			aSeedPickArray[2].mItem = SEED_JALAPENO;
-			aSeedPickArray[2].mWeight = 12;
-			aSeedPickArray[3].mItem = SEED_CABBAGEPULT;
-			aSeedPickArray[3].mWeight = 10;
-			aSeedPickArray[4].mItem = SEED_KERNELPULT;
-			aSeedPickArray[4].mWeight = 5;
-			aSeedPickArray[5].mItem = SEED_ICESHROOM;
-			aSeedPickArray[5].mWeight = 8;
-		}
+		aSeedPickCount = 6;
+		aSeedPickArray[0].mItem = SEED_FLOWERPOT;
+		aSeedPickArray[0].mWeight = 55;
+		aSeedPickArray[1].mItem = SEED_MELONPULT;
+		aSeedPickArray[1].mWeight = 10;
+		aSeedPickArray[2].mItem = SEED_JALAPENO;
+		aSeedPickArray[2].mWeight = 12;
+		aSeedPickArray[3].mItem = SEED_CABBAGEPULT;
+		aSeedPickArray[3].mWeight = 10;
+		aSeedPickArray[4].mItem = SEED_KERNELPULT;
+		aSeedPickArray[4].mWeight = 5;
+		aSeedPickArray[5].mItem = SEED_ICESHROOM;
+		aSeedPickArray[5].mWeight = 8;
 	}
 	else if (mApp->IsShovelLevel())
 	{
@@ -2287,6 +2214,11 @@ void Challenge::Update()
 	{
 		TreeOfWisdomUpdate();
 	}
+	if (mApp->mGameMode == GAMEMODE_CHALLENGE_ICE && mBoard->mMainCounter == 3000)
+	{
+		mApp->PlayFoley(FOLEY_FLOOP);
+		mApp->PlaySample(Sexy::SOUND_LOSEMUSIC);
+	}
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_LAST_STAND)
 	{
 		LastStandUpdate();
@@ -2635,7 +2567,8 @@ void Challenge::InitZombieWaves()
 	{
 		aList[ZOMBIE_NORMAL] = true;
 		aList[ZOMBIE_TRAFFIC_CONE] = true;
-		aList[ZOMBIE_DASH_AOE] = true;
+		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		aList[ZOMBIE_POLEVAULTER] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_POGO_PARTY)
 	{
@@ -2699,16 +2632,6 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_DOOR] = true;
 		aList[ZOMBIE_BALLOON] = true;
 	}
-	else if (aGameMode == GAMEMODE_CHALLENGE_ICE)
-	{
-		aList[ZOMBIE_NORMAL] = true;
-		aList[ZOMBIE_TRAFFIC_CONE] = true;
-		aList[ZOMBIE_PAIL] = true;
-		aList[ZOMBIE_DOOR] = true;
-		aList[ZOMBIE_NEWSPAPER] = true;
-		aList[ZOMBIE_FOOTBALL] = true;
-		aList[ZOMBIE_POLEVAULTER] = true;
-	}
 	else if (mApp->IsWhackAZombieLevel())
 	{
 		aList[ZOMBIE_NORMAL] = true;
@@ -2719,6 +2642,10 @@ void Challenge::InitZombieWaves()
 	{
 		aList[ZOMBIE_BOBSLED] = true;
 		aList[ZOMBIE_ZAMBONI] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_AIR_RAID)
+	{
+		aList[ZOMBIE_BALLOON] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_BEGHOULED || aGameMode == GAMEMODE_CHALLENGE_BEGHOULED_TWIST)
 	{
@@ -2996,6 +2923,7 @@ bool Challenge::UpdateZombieSpawning()
 	}
 	else return
 		mApp->IsFinalBossLevel() ||
+		mApp->mGameMode == GAMEMODE_CHALLENGE_ICE ||
 		mApp->mGameMode == GAMEMODE_CHALLENGE_ZEN_GARDEN ||
 		mApp->mGameMode == GAMEMODE_TREE_OF_WISDOM ||
 		mApp->mGameMode == GAMEMODE_CHALLENGE_ZOMBIQUARIUM ||
@@ -3117,18 +3045,6 @@ void Challenge::DrawStormFlash(Graphics* g, int theTime, int theMaxAmount)
 //0x426B20
 void Challenge::DrawWeather(Graphics* g)
 {
-	DrawWeatherBackground(g);
-	DrawWeatherForeground(g);
-}
-
-void Challenge::DrawWeatherBackground(Graphics* g)
-{
-	if (mApp->IsStormyNightLevel() || mApp->mGameMode == GAMEMODE_CHALLENGE_RAINING_SEEDS)
-		DrawRainBackground(g);
-}
-
-void Challenge::DrawWeatherForeground(Graphics* g)
-{
 	if (mApp->IsStormyNightLevel() || mApp->mGameMode == GAMEMODE_CHALLENGE_RAINING_SEEDS)
 		DrawRain(g);
 
@@ -3137,40 +3053,47 @@ void Challenge::DrawWeatherForeground(Graphics* g)
 }
 
 //0x426B90
-void Challenge::DrawRainBackground(Graphics* g)
-{
-	if (mBoard->mCutScene->IsBeforePreloading() || !mApp->Is3DAccelerated())
-		return;
-
-	// Background Rain
-	int aTimeBack = mBoard->mEffectCounter % 100;
-	int aOffsetBackX = TodAnimateCurve(0, 100, aTimeBack, 0, -100, CURVE_LINEAR);
-	int aOffsetBackY = TodAnimateCurve(0, 100, aTimeBack, 0, 400, CURVE_LINEAR); // Faster fall
-	
-	for (int i = -1; i < 11; i++)
-	{
-		for (int j = -2; j < 5; j++)
-		{
-			g->DrawImage(Sexy::IMAGE_RAIN, i * 100 + aOffsetBackX, j * 240 + aOffsetBackY);
-		}
-	}
-}
-
 void Challenge::DrawRain(Graphics* g)
 {
 	if (mBoard->mCutScene->IsBeforePreloading() || !mApp->Is3DAccelerated())
 		return;
 
-	// Foreground Rain
-	int aTimeFore = mBoard->mEffectCounter % 60;
-	int aOffsetForeX = TodAnimateCurve(0, 60, aTimeFore, 0, -150, CURVE_LINEAR);
-	int aOffsetForeY = TodAnimateCurve(0, 60, aTimeFore, 0, 600, CURVE_LINEAR); // Very fast fall
-
-	for (int i = -1; i < 8; i++)
+	int aBoardOffsetX;
+	if (aBoardOffsetX > 0)
 	{
-		for (int j = -2; j < 3; j++)
+		aBoardOffsetX = (mBoard->mX + 100) / 100 * -100;
+	}
+	else
+	{
+		aBoardOffsetX = mBoard->mX / 100 * -100;
+	}
+
+	int aTime = mBoard->mEffectCounter % 100;
+	int aTimeOffsetXEst = TodAnimateCurve(0, 100, aTime, 0, -100, CURVE_LINEAR);
+	int aTimeOffsetYEst = TodAnimateCurve(0, 20, aTime, -100, 0, CURVE_LINEAR);
+	// 绘制远景的雨
+	for (int aHorCnt = 9; aHorCnt > 0; aHorCnt--)
+	{
+		for (int aVerCnt = 7; aVerCnt > 0; aVerCnt--)
 		{
-			TodDrawImageScaledF(g, Sexy::IMAGE_RAIN, i * 140 + aOffsetForeX, j * 370 + aOffsetForeY, 1.5f, 1.5f);
+			int aImageX = aTimeOffsetXEst + 100 * aHorCnt + aBoardOffsetX;
+			int aImageY = aTimeOffsetXEst + 100 * aVerCnt;
+			g->DrawImage(Sexy::IMAGE_RAIN, aImageX, aImageY);
+		}
+	}
+
+	aTime = mBoard->mEffectCounter;
+	float aTimeOffsetXCls = TodAnimateCurve(0, 161, aTime % 161, 0, -100, CURVE_LINEAR);
+	float aTimeOffsetYCls = TodAnimateCurve(0, 33, aTime % 33, -100, 0, CURVE_LINEAR);
+	// 绘制近景的雨
+	for (int aHorCnt = 0; aHorCnt < 9; aHorCnt++)
+	{
+		for (int aVerCnt = 0; aVerCnt < 7; aVerCnt++)
+		{
+			float aRainScaleCls = 1.5f;
+			float aImageClsX = (aHorCnt * 100 + aTimeOffsetXCls) * aRainScaleCls + aBoardOffsetX;
+			float aImageClsY = (aVerCnt * 100 + aTimeOffsetYCls) * aRainScaleCls;
+			TodDrawImageScaledF(g, Sexy::IMAGE_RAIN, aImageClsX, aImageClsY, aRainScaleCls, aRainScaleCls);
 		}
 	}
 }
@@ -3518,6 +3441,35 @@ GridItem* Challenge::GetPortalToRight(int theGridX, int theGridY)
 
 	return aGridItemRecord;
 }
+
+// BONUS
+GridItem* Challenge::GetPortalLeftRight(int theGridX, int theGridY, bool theToLeft)
+{
+	GridItem* aGridItemRecord = nullptr;
+
+	GridItem* aGridItem = nullptr;
+	while (mBoard->IterateGridItems(aGridItem))
+	{
+		int aPortalX = aGridItem->mGridX;
+		if (aPortalX == theGridX)
+		{
+			continue;  // 排除传送门与 theGridX 在同一列的情况
+		}
+
+		bool aIsDir = (aPortalX > theGridX) ^ theToLeft;
+		if (aGridItem->IsOpenPortal() && aIsDir && aGridItem->mGridY == theGridY)
+		{
+			bool aIsCls = (aGridItemRecord->mGridX > aPortalX) ^ theToLeft;
+			if (!aGridItemRecord || aIsCls)
+			{
+				aGridItemRecord = aGridItem;
+			}
+		}
+	}
+
+	return aGridItemRecord;
+}
+// BONUS_END
 
 //0x4279E0
 bool Challenge::CanTargetZombieWithPortals(Plant* thePlant, Zombie* theZombie)
@@ -5243,16 +5195,16 @@ void Challenge::UpdateRain()
 		aPosX = RandRangeFloat(40.0f, 740.0f);
 		aPosY = RandRangeFloat(290.0f, 410.0f);
 		Reanimation* aCircleReanim = mApp->AddReanimation(aPosX, aPosY, RENDER_LAYER_GROUND, REANIM_RAIN_CIRCLE);
-		aCircleReanim->mColorOverride = Color(255, 255, 255, RandRangeInt(50, 150));
+		aSplashReanim->mColorOverride = Color(255, 255, 255, RandRangeInt(50, 150));
 		aScale = RandRangeFloat(0.7f, 1.1f);
-		aCircleReanim->OverrideScale(aScale, aScale);
+		aSplashReanim->OverrideScale(aScale, aScale);
 
 		aPosX = RandRangeFloat(40.0f, 740.0f);
 		aPosY = RandRangeFloat(450.0f, 580.0f);
 		Reanimation* aRainReanim = mApp->AddReanimation(aPosX, aPosY, RENDER_LAYER_GROUND, REANIM_RAIN_SPLASH);
-		aRainReanim->mColorOverride = Color(255, 255, 255, RandRangeInt(100, 200));
+		aSplashReanim->mColorOverride = Color(255, 255, 255, RandRangeInt(100, 200));
 		aScale = RandRangeFloat(0.7f, 1.2f);
-		aRainReanim->OverrideScale(aScale, aScale);
+		aSplashReanim->OverrideScale(aScale, aScale);
 		
         mRainCounter = RandRangeInt(10, 20);
 	}
@@ -5749,6 +5701,3 @@ bool Challenge::TreeOfWisdomCanFeed()
 
 	return true;
 }
-
-
-
